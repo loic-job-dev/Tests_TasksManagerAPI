@@ -15,7 +15,7 @@ public class TaskService {
         taskList.add(task);
     }
 
-    public void deleteTask (String id) {
+    public void deleteTask (String id) throws UnsupportedOperationException {
         taskList.removeIf(task -> task.getId().equals(id));
     }
 
@@ -23,11 +23,13 @@ public class TaskService {
         return this.taskList;
     }
 
-    public void checkTask(String id) {
+    public boolean checkTask(String id, boolean isOver) throws UnsupportedOperationException {
         for (Task task : taskList) {
             if (task.getId().equals(id)) {
-                task.setOver(true);
+                task.setOver(isOver);
+                return true;
             }
         }
+        return false;
     }
 }

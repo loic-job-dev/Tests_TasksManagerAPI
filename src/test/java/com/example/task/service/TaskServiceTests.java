@@ -48,7 +48,7 @@ public class TaskServiceTests {
 
         assertFalse(taskService.getTaskList().get(0).isOver());
 
-        taskService.checkTask(taskService.getTaskList().get(0).getId());
+        taskService.checkTask(taskService.getTaskList().get(0).getId(), true);
 
         assertTrue(taskService.getTaskList().get(0).isOver());
     }

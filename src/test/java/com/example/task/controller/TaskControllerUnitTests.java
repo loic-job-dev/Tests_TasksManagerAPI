@@ -2,12 +2,15 @@ package com.example.task.controller;
 
 import com.example.task.model.Task;
 import com.example.task.service.TaskService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +19,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(TaskController.class)
@@ -52,6 +56,7 @@ public class TaskControllerUnitTests {
                 .andExpect(content().json("[{\"description\":\"pippo\"},{\"description\":\"foo\"}]"));
     }
 
+    //Tests pour GET route
     @Test
     void task_list_has_good_size() throws Exception {
         when(taskService.getTaskList()).thenReturn(mockTasks);
@@ -77,5 +82,28 @@ public class TaskControllerUnitTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].description", is("pippo")))
                 .andExpect(jsonPath("$[2].description", is("pippo")));
+    }
+
+    //Tests for POST route
+    public static String asJsonString(final Object obj) {
+        try {
+            return new ObjectMapper().writeValueAsString(obj);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    void task_is_added() throws Exception {
+        Task newTask = new Task("added from Post");
+        mockTasks.add(newTask);
+        when(taskService.getTaskList()).thenReturn(mockTasks);
+        mockMvc.perform(post("/tasks")
+                .content(asJsonString(newTask))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.description", is("added from Post")));
+        mockTasks.remove(newTask);
     }
 }
