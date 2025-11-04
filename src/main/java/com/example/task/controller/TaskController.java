@@ -1,6 +1,6 @@
 package com.example.task.controller;
 
-import com.example.task.Task;
+import com.example.task.model.Task;
 import com.example.task.service.TaskService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

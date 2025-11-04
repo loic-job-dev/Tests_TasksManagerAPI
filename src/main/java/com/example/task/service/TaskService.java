@@ -1,6 +1,6 @@
 package com.example.task.service;
 
-import com.example.task.Task;
+import com.example.task.model.Task;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,8 +1,8 @@
-package com.example.task;
+package com.example.task.service;
 
-import com.example.task.service.TaskService;
+import com.example.task.model.Task;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TaskServiceTests {

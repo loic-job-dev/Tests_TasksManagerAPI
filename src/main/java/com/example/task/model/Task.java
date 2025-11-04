@@ -1,4 +1,4 @@
-package com.example.task;
+package com.example.task.model;
 
 import java.util.UUID;
 
