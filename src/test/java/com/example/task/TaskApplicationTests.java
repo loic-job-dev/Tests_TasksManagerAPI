@@ -57,7 +57,7 @@ class TaskApplicationTests {
 
         assertFalse(taskService.getTaskList().get(0).isOver());
 
-        taskService.getTaskList().get(0).setOver(true);
+        taskService.checkTask(taskService.getTaskList().get(0).getId());
 
         assertTrue(taskService.getTaskList().get(0).isOver());
     }
