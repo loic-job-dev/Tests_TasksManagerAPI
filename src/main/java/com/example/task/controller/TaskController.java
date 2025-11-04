@@ -41,12 +41,12 @@ public class TaskController<T> {
     }
 
     @DeleteMapping("/{taskId}")
-    public ResponseEntity<String> deleteTask(@PathVariable(value= "taskId") String taskId) {
+    public ResponseEntity<HttpStatus> deleteTask(@PathVariable("taskId") String taskId) {
         try {
             taskService.deleteTask(taskId);
-            return ResponseEntity.ok("Task deleted!");
+            return new ResponseEntity<HttpStatus>(HttpStatus.ACCEPTED);
         } catch (UnsupportedOperationException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return new ResponseEntity<HttpStatus>(HttpStatus.NOT_FOUND);
         }
     }
 

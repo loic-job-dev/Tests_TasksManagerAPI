@@ -16,20 +16,21 @@ public class TaskService {
     }
 
     public void deleteTask (String id) throws UnsupportedOperationException {
-        taskList.removeIf(task -> task.getId().equals(id));
+        boolean removed = taskList.removeIf(task -> task.getId().equals(id));
+        if (!removed) {
+            throw new UnsupportedOperationException("Task not found");
+        }
     }
 
     public List<Task> getTaskList() {
         return this.taskList;
     }
 
-    public boolean checkTask(String id, boolean isOver) throws UnsupportedOperationException {
+    public void checkTask(String id, boolean isOver) throws UnsupportedOperationException {
         for (Task task : taskList) {
             if (task.getId().equals(id)) {
                 task.setOver(isOver);
-                return true;
             }
         }
-        return false;
     }
 }
