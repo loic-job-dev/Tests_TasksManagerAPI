@@ -13,8 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -113,5 +112,24 @@ public class TaskControllerIntegrationTests {
     }
 
     //Tests for PUT route
+    @Test
+    void task_is_updated() throws Exception {
+        String taskId = taskService.getTaskList().get(0).getId();
 
+        mockMvc.perform(put("/tasks/{taskId}", taskId)
+                        .content("true")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.over").value(true));
+    }
+
+    @Test
+    void task_is_updated_with_error() throws Exception {
+        doThrow(new UnsupportedOperationException()).when(taskService).checkTask("wrongId", true);
+
+        mockMvc.perform(put("/tasks/{taskId}", "wrongId")
+                        .content("true") // body requis pour @RequestBody boolean
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
 }
