@@ -26,11 +26,25 @@ public class TaskService {
         return this.taskList;
     }
 
+    public Task getTaskById(String id) throws UnsupportedOperationException {
+        for (Task task : taskList) {
+            if (task.getId().equals(id)) {
+                return task;
+            }
+        }
+        throw new UnsupportedOperationException("Task not found");
+    }
+
     public void checkTask(String id, boolean isOver) throws UnsupportedOperationException {
+        boolean changed = false;
         for (Task task : taskList) {
             if (task.getId().equals(id)) {
                 task.setOver(isOver);
+                changed = true;
             }
+        }
+        if (!changed) {
+            throw new UnsupportedOperationException("Task not found");
         }
     }
 }

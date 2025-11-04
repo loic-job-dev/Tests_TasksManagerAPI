@@ -32,8 +32,6 @@ public class TaskController<T> {
         return ResponseEntity.ok(taskService.getTaskList());
     }
 
-    //TODO : add tests for these routes
-
     @PostMapping()
     public ResponseEntity<Task> addTask(@RequestBody Task task) {
         taskService.addTask(task);
@@ -50,13 +48,16 @@ public class TaskController<T> {
         }
     }
 
+    //TODO : add tests for this route
+
     @PutMapping("/{taskId}")
-    public ResponseEntity<String> updateTask(@PathVariable(value= "taskId") String taskId, @RequestBody boolean isOver) {
+    public ResponseEntity<Task> updateTask(@PathVariable("taskId") String taskId, @RequestBody boolean isOver) {
         try {
             taskService.checkTask(taskId, isOver);
-            return ResponseEntity.ok("Task state modified !");
+            Task updatedTask = taskService.getTaskById(taskId);
+            return ResponseEntity.ok(updatedTask);
         } catch (UnsupportedOperationException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.notFound().build();
         }
     }
 }
