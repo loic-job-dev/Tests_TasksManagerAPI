@@ -2,8 +2,6 @@ package com.example.task.controller;
 
 import com.example.task.model.Task;
 import com.example.task.service.TaskService;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.hamcrest.Matchers.is;
@@ -69,8 +65,8 @@ public class TaskControllerUnitTests {
         when(taskService.getTaskList()).thenReturn(mockTasks);
         mockMvc.perform(get("/tasks"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].isOver", is(false)))
-                .andExpect(jsonPath("$[1].isOver", is(false)));
+                .andExpect(jsonPath("$[0].over", is(false)))
+                .andExpect(jsonPath("$[1].over", is(false)));
     }
 
     @Test
