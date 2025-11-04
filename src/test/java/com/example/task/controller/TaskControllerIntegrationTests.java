@@ -125,7 +125,6 @@ public class TaskControllerIntegrationTests {
 
     @Test
     void task_is_updated_with_error() throws Exception {
-        doThrow(new UnsupportedOperationException()).when(taskService).checkTask("wrongId", true);
 
         mockMvc.perform(put("/tasks/{taskId}", "wrongId")
                         .content("true") // body requis pour @RequestBody boolean
