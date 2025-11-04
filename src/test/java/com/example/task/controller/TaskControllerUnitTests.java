@@ -159,7 +159,7 @@ public class TaskControllerUnitTests {
         String wrongId = "wrongId";
 
         doThrow(new UnsupportedOperationException("Task not found"))
-                .when(taskService).checkTask(eq(wrongId), eq(true));
+                .when(taskService).checkTask("wrongId", true);
 
         mockMvc.perform(put("/tasks/{taskId}", wrongId)
                         .content("true") // body requis pour @RequestBody boolean
