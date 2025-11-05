@@ -116,8 +116,10 @@ public class TaskControllerIntegrationTests {
     void task_is_updated() throws Exception {
         String taskId = taskService.getTaskList().get(0).getId();
 
+        String jsonBody = "{\"isOver\": true}";
+
         mockMvc.perform(put("/tasks/{taskId}", taskId)
-                        .content("true")
+                        .content(jsonBody)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.over").value(true));
@@ -125,9 +127,10 @@ public class TaskControllerIntegrationTests {
 
     @Test
     void task_is_updated_with_error() throws Exception {
+        String jsonBody = "{\"isOver\": true}";
 
         mockMvc.perform(put("/tasks/{taskId}", "wrongId")
-                        .content("true") // body requis pour @RequestBody boolean
+                        .content(jsonBody)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }

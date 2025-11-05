@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/tasks")
@@ -48,10 +49,12 @@ public class TaskController<T> {
         }
     }
 
-    //TODO : add tests for this route
 
     @PutMapping("/{taskId}")
-    public ResponseEntity<Task> updateTask(@PathVariable("taskId") String taskId, @RequestBody boolean isOver) {
+    public ResponseEntity<Task> updateTask(@PathVariable("taskId") String taskId,
+                                           @RequestBody Map<String, Boolean> body) {
+        Boolean isOver = body.get("isOver");
+        if(isOver == null) return ResponseEntity.badRequest().build();
         try {
             taskService.checkTask(taskId, isOver);
             Task updatedTask = taskService.getTaskById(taskId);

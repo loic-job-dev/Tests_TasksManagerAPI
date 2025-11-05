@@ -147,8 +147,10 @@ public class TaskControllerUnitTests {
 
         when(taskService.getTaskById(taskId)).thenReturn(task);
 
+        String jsonBody = "{\"isOver\": true}";
+
         mockMvc.perform(put("/tasks/{taskId}", taskId)
-                .content("true")
+                .content(jsonBody)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.over").value(true));
@@ -161,8 +163,10 @@ public class TaskControllerUnitTests {
         doThrow(new UnsupportedOperationException("Task not found"))
                 .when(taskService).checkTask("wrongId", true);
 
+        String jsonBody = "{\"isOver\": true}";
+
         mockMvc.perform(put("/tasks/{taskId}", wrongId)
-                        .content("true") // body requis pour @RequestBody boolean
+                        .content(jsonBody) // body requis pour @RequestBody boolean
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
